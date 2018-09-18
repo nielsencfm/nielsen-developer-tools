@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+    <style>
+      #numberOfRandomNumbersToGenerate {
+        width: 75px;
+      }
+
+      #minimumResultRange, #maximumResultRange {
+        width: 120px;
+      }
+
+      #errorMessage {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Random Number Generator</h1>
+    <form>
+      <p>Generate
+        <input id="numberOfRandomNumbersToGenerate" type="text" value="1"/>
+        random number(s) between
+        <input id="minimumResultRange" type="text" value="1">
+        and
+        <input id="maximumResultRange" type="text" value="10">
+        inclusive
+      </p>
+      <p id="errorMessage"></p>
+      <input type="submit" value="Generate">
+    </form>
+    <button id="howDoesItWorkButton">How does it work?</button>
+    <div id="aboutSection">
+      <p>Uses the JavaScript (ECMAScript) random function</p>
+      <p>According to ECMA-262 the function random</p>
+      <p>Returns a Number value with positive sign, greater than or equal to 0 but less than 1, chosen randomly or
+        pseudo randomly with approximately uniform distribution over that range, using an implementation-dependent
+        algorithm or strategy. This function takes no arguments.</p>
+    </div>
+    <div id="results">
+      <h2>Result:</h2>
+      <textarea></textarea>
+      <button id="copyToClipboard">Copy to clipboard</button>
+    </div>
+
+    <script>
+      $("#errorMessage").hide();
+      // $("#results").hide();
+      $("#aboutSection").hide();
+
+      function showError(message) {
+          $("#errorMessage").show().append("<p>" + message + "</p>");
+      }
+
+      $("form").submit(function (event) {
+        event.preventDefault();
+        console.log("form")
+        $("#errorMessage").hide();
+        $("#errorMessage").empty();
+        // $("#results").hide();
+
+        var numberOfRandomNumbersToGenerateRaw = $("#numberOfRandomNumbersToGenerate").val();
+        var numberOfRandomNumbersToGenerate = Number(numberOfRandomNumbersToGenerateRaw);
+        if (numberOfRandomNumbersToGenerate > 1000000) {
+          showError("WARNING: This generator will not find more than 1,000,000 random numbers as it takes too long to render in the browser.");
+        }
+
+        var $minimumResultRange = $("#minimumResultRange").val();
+        var minimumResultRange = Number($minimumResultRange);
+        if (minimumResultRange < Number.MIN_SAFE_INTEGER) {
+          showError("WARNING: The JavaScript number type is a double-precision floating-point number as specified in IEEE 754 and can only safely represent integers above -9007199254740991 so if the range is beneath this number the random numbers generated will not be uniformly distributed.");
+        }
+
+        var $maximumResultRange = $("#maximumResultRange").val();
+        var maximumResultRange = Number($maximumResultRange);
+        if (maximumResultRange > Number.MAX_SAFE_INTEGER) {
+          showError("WARNING: The JavaScript number type is a double-precision floating-point number as specified in IEEE 754 and can only safely represent integers below 9007199254740991 so if the range is beneath this number the random numbers generated will not be uniformly distributed.");
+        }
+
+        var range = maximumResultRange - minimumResultRange + 1;
+        var results = ""
+        for (var i = 0; i < numberOfRandomNumbersToGenerate; i++) {
+          var randomNumber = Math.floor((Math.random() * range) + minimumResultRange);
+          results += randomNumber + "\n"
+        }
+
+        if (results.length > 0) {
+          $("#results").show();
+          $("#results textarea").text(results);
+        }
+      });
+
+      $("#howDoesItWorkButton").click(function () {
+        $("#aboutSection").toggle();
+      })
+
+      $("#copyToClipboard").click(function () {
+        $("#results textarea").select();
+        document.execCommand('copy');
+      })
+    </script>
+  </body>
+</html>
