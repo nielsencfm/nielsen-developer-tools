@@ -1,5 +1,9 @@
 <html>
   <head>
+    <title>Nielsen Developer Tools - Random Number Generator</title>
+    <meta name="author" content="Chris Nielsen">
+    <meta name="description" content="A simple random number generator">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
     <style>
       #numberOfRandomNumbersToGenerate {
@@ -13,9 +17,14 @@
       #errorMessage {
         color: red;
       }
+
+      input[type="submit"] {
+        font-size: 2em;
+      }
     </style>
   </head>
   <body>
+    <a href="">Nielsen Developer Tools</a>
     <h1>Random Number Generator</h1>
     <form>
       <p>Generate
@@ -31,21 +40,21 @@
     </form>
     <button id="howDoesItWorkButton">How does it work?</button>
     <div id="aboutSection">
-      <p>Uses the JavaScript (ECMAScript) random function</p>
-      <p>According to ECMA-262 the function random</p>
-      <p>Returns a Number value with positive sign, greater than or equal to 0 but less than 1, chosen randomly or
+      <p>This random number generator uses the JavaScript (ECMAScript) 'random()' function.</p>
+      <p>According to ECMA-262 the function 'random' returns a Number value with positive sign, greater than or equal to 0 but less than 1, chosen randomly or
         pseudo randomly with approximately uniform distribution over that range, using an implementation-dependent
-        algorithm or strategy. This function takes no arguments.</p>
+        algorithm or strategy.</p>
+      <p>Numbers in JavaScript are always stored as floating point even if they are presented to the user as whole integers. It is however safe to use JavaScript to do integer maths between -9007199254740991 and 9007199254740991.  This random number generator can be used for numbers outside of this range but the results will not be uniformly distributed.  If this is attempted an error message will be displayed.</p>
     </div>
     <div id="results">
       <h2>Result:</h2>
-      <textarea></textarea>
       <button id="copyToClipboard">Copy to clipboard</button>
+      <pre></pre>
     </div>
 
     <script>
       $("#errorMessage").hide();
-      // $("#results").hide();
+      $("#results").hide();
       $("#aboutSection").hide();
 
       function showError(message) {
@@ -57,12 +66,11 @@
         console.log("form")
         $("#errorMessage").hide();
         $("#errorMessage").empty();
-        // $("#results").hide();
 
         var numberOfRandomNumbersToGenerateRaw = $("#numberOfRandomNumbersToGenerate").val();
         var numberOfRandomNumbersToGenerate = Number(numberOfRandomNumbersToGenerateRaw);
-        if (numberOfRandomNumbersToGenerate > 1000000) {
-          showError("WARNING: This generator will not find more than 1,000,000 random numbers as it takes too long to render in the browser.");
+        if (numberOfRandomNumbersToGenerate > 10000) {
+          showError("WARNING: This generator will not find more than 10,000 random numbers as it takes too long to render in the browser.");
         }
 
         var $minimumResultRange = $("#minimumResultRange").val();
@@ -86,7 +94,7 @@
 
         if (results.length > 0) {
           $("#results").show();
-          $("#results textarea").text(results);
+          $("#results pre").text(results);
         }
       });
 
@@ -95,8 +103,22 @@
       })
 
       $("#copyToClipboard").click(function () {
-        $("#results textarea").select();
-        document.execCommand('copy');
+        var resultsNode = $("#results pre").get(0);
+        window.getSelection().removeAllRanges();
+        var range = document.createRange();
+        range.selectNodeContents(resultsNode);
+        window.getSelection().addRange(range);
+
+        try {
+          var result = document.execCommand('copy');
+          if (!result) {
+            console.log('Copy to clipboard failed');
+          }
+        } catch (err) {
+          console.log('Copy to clipboard failed');
+        }
+
+        window.getSelection().removeAllRanges();
       })
     </script>
   </body>
