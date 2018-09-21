@@ -1,17 +1,13 @@
 <html>
   <head>
-    <title>Nielsen Developer Tools - Random Number Generator</title>
+    <title>Nielsen Developer Tools - Online Random Number Generator</title>
     <meta name="author" content="Chris Nielsen">
     <meta name="description" content="A simple random number generator">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
     <style>
-      #numberOfRandomNumbersToGenerate {
+      input[type="text"] {
         width: 75px;
-      }
-
-      #minimumResultRange, #maximumResultRange {
-        width: 120px;
       }
 
       #errorMessage {
@@ -25,7 +21,7 @@
   </head>
   <body>
     <a href="">Nielsen Developer Tools</a>
-    <h1>Random Number Generator</h1>
+    <h1>Online Random Number Generator</h1>
     <form>
       <p>Generate
         <input id="numberOfRandomNumbersToGenerate" type="text" value="1"/>
@@ -38,22 +34,19 @@
       <p id="errorMessage"></p>
       <input type="submit" value="Generate">
     </form>
-    <div id="results">
-      <h2>Result:</h2>
-      <button id="copyToClipboard">Copy to clipboard</button>
-      <pre></pre>
-    </div>
+    <h2>Results</h2>
+    <textarea id="results" rows="20" cols="50"></textarea>
+    <button id="copyToClipboard">Copy to clipboard</button>
     <h2>How does it work?</h2>
-      <p>This random number generator uses the JavaScript (ECMAScript) 'random()' function.</p>
-      <p>According to ECMA-262 the function 'random' returns a Number value with positive sign, greater than or equal to 0 but less than 1, chosen randomly or
-        pseudo randomly with approximately uniform distribution over that range, using an implementation-dependent
-        algorithm or strategy.</p>
-      <p>The pseudo random number generator in mainstream modern browsers is sufficient for most non-cyrptographic applications.</p>
-      <p>Numbers in JavaScript are always stored as floating point even if they are presented to the user as whole integers. It is however safe to use JavaScript to do integer maths between -9007199254740991 and 9007199254740991.  This random number generator can be used for numbers outside of this range but the results will not be uniformly distributed.  If this is attempted an error message will be displayed.</p>
+    <p>This random number generator uses the JavaScript (ECMAScript) 'random()' function.</p>
+    <p>According to ECMA-262 the function 'random' returns a Number value with positive sign, greater than or equal to 0 but less than 1, chosen randomly or
+      pseudo randomly with approximately uniform distribution over that range, using an implementation-dependent
+      algorithm or strategy.</p>
+    <p>The pseudo random number generator in mainstream modern browsers is sufficient for most non-cyrptographic applications.</p>
+    <p>Numbers in JavaScript are always stored as floating point even if they are presented to the user as whole integers. It is however safe to use JavaScript to do integer maths between -9007199254740991 and 9007199254740991.  This random number generator can be used for numbers outside of this range but the results will not be uniformly distributed.  If this is attempted an error message will be displayed.</p>
 
     <script>
       $("#errorMessage").hide();
-      $("#results").hide();
 
       function showError(message) {
           $("#errorMessage").show().append("<p>" + message + "</p>");
@@ -61,7 +54,6 @@
 
       $("form").submit(function (event) {
         event.preventDefault();
-        console.log("form")
         $("#errorMessage").hide();
         $("#errorMessage").empty();
 
@@ -90,18 +82,13 @@
           results += randomNumber + "\n"
         }
 
-        if (results.length > 0) {
-          $("#results").show();
-          $("#results pre").text(results);
-        }
+        $("#results").text(results);
       });
 
       $("#copyToClipboard").click(function () {
-        var resultsNode = $("#results pre").get(0);
-        window.getSelection().removeAllRanges();
-        var range = document.createRange();
-        range.selectNodeContents(resultsNode);
-        window.getSelection().addRange(range);
+        var resultsNode = $("#results").get(0);
+        resultsNode.select();
+        // https://gist.github.com/DominicTobias/12dcc416026d33b601f6d7d09fbcdff1
 
         try {
           var result = document.execCommand('copy');
