@@ -19,6 +19,7 @@
 
     input[type="submit"] {
       font-size: 2em;
+      margin-left: 100px;
     }
 
     h2 {
@@ -28,6 +29,12 @@
     textarea {
       font-family: monospace;
     }
+
+    label {
+      display: inline-block;
+      width: 100px;
+      text-align: right;
+    }
   </style>
 </head>
 
@@ -36,18 +43,36 @@
     <a href="../">Nielsen Developer Tools</a>
     <h1>Online GUID/UUID Generator</h1>
     <form>
-      <p>Generate
+      <p>
+        <label for="numberToGenerate">Quantity:</label>
         <input id="numberToGenerate" type="text" value="1" />
-        GUID/UUID(s)
+      </p>
+      <p>
+        <label for="generateWithHyphens">Hyphens:</label>
+        <input id="generateWithHyphens" type="checkbox" checked />
+      </p>
+      <p>
+        <label for="generateUppercase">Uppercase:</label>
+        <input id="generateUppercase" type="checkbox" />
+      </p>
+      <p>
+        <label for="generateWithBraces">Braces:</label>
+        <input id="generateWithBraces" type="checkbox" />
       </p>
       <p id="errorMessage"></p>
-      <input type="submit" value="Generate GUID(s)">
+      <input type="submit" value="Generate">
     </form>
     <h2>Results</h2>
     <textarea id="results" rows="20" cols="50"></textarea>
     <button id="copyToClipboard">Copy to clipboard</button>
     <h2>How does it work?</h2>
-    <p>...</p>
+    <p>A globally unique identifier (GUID) or universally unique identifier (UUID) is a 128-bit number used as a unique
+    identifier in computer systems. There is a non-zero probability that generated GUID/UUIDs are not unique but for all
+    practical purposes they can be treated as unique.</p>
+    <p>In it's canonical representation UUIDs are represented with 32 hexadecimal digits seperated by hyphens in groups of
+    8-4-4-4-12.</p>
+    <p>GUID/UUIDs are commonly unsed as database keys and unique identifiers for data that may be duplicated across data
+    stores.</p>
   </div>
 
   <script>
@@ -57,10 +82,20 @@
       $("#errorMessage").show().append("<p>" + message + "</p>");
     }
 
-    function generate(number) {
+    function generate(number, generateWithBraces, generateUppercase, generateWithHyphens) {
       var rval = "";
       for (var i = 0; i < number; i++) {
-        rval += uuidv4() + "\n";
+        var uuid = uuidv4();
+        if (!generateWithHyphens) {
+          uuid = uuid.replace(/[-]/g, "");
+        }
+        if (generateUppercase) {
+          uuid = uuid.toUpperCase();
+        }
+        if (generateWithBraces) {
+          uuid = "{" + uuid + "}";
+        }
+        rval += uuid + "\n";
       }
       return rval;
     }
@@ -84,11 +119,14 @@
         showError("WARNING: This generator will generate more than 10,000 GUIDs as it takes too long in the browser.");
       }
 
-      var results = generate(numberToGenerate)
+      var generateWithBraces = $("#generateWithBraces").prop('checked');
+      var generateUppercase = $("#generateUppercase").prop('checked');
+      var generateWithHyphens = $("#generateWithHyphens").prop('checked');
+      var results = generate(numberToGenerate, generateWithBraces, generateUppercase, generateWithHyphens)
       $("#results").text(results);
     });
 
-    var results = generate(1)
+    var results = generate(1, false, false, true)
     $("#results").text(results);
 
     $("#copyToClipboard").click(function () {
