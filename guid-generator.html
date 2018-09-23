@@ -19,7 +19,7 @@
 
     input[type="submit"] {
       font-size: 2em;
-      margin-left: 100px;
+      margin-left: 200px;
     }
 
     h2 {
@@ -32,8 +32,12 @@
 
     label {
       display: inline-block;
-      width: 100px;
+      width: 200px;
       text-align: right;
+    }
+
+    textarea {
+      white-space: nowrap;  overflow: auto;
     }
   </style>
 </head>
@@ -126,8 +130,7 @@
       $("#results").text(results);
     });
 
-    var results = generate(1, false, false, true)
-    $("#results").text(results);
+    $("form").submit();
 
     $("#copyToClipboard").click(function () {
       var resultsNode = $("#results").get(0);
