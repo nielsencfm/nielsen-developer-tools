@@ -1,0 +1,24 @@
+{
+  "name": "nielsen-developer-tools",
+  "version": "1.0.0",
+  "description": "Chris Nielsen's developer tools",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nielsencfm/nielsen-developer-tools.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nielsencfm/nielsen-developer-tools/issues"
+  },
+  "homepage": "https://github.com/nielsencfm/nielsen-developer-tools#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "fs-extra": "^7.0.0",
+    "glob": "^7.1.3"
+  }
+}

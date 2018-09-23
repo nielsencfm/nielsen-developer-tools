@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Nielsen Developer Tools - <%= title %></title>
+  <meta name="author" content="Chris Nielsen">
+  <meta name="description" content="A simple GUID/UUID generator">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+  <style>
+    input[type="text"] {
+      width: 75px;
+    }
+
+    #errorMessage {
+      color: red;
+    }
+
+    input[type="submit"] {
+      font-size: 2em;
+      margin-left: 200px;
+    }
+
+    h2 {
+      margin-top: 40px;
+    }
+
+    textarea {
+      font-family: monospace;
+    }
+
+    label {
+      display: inline-block;
+      width: 200px;
+      text-align: right;
+    }
+
+    textarea {
+      white-space: nowrap;  overflow: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="width: 600px">
+    <a href="../">Nielsen Developer Tools</a>
+    <h1>Online GUID/UUID Generator</h1>
+    <form>
+      <p>
+        <label for="numberToGenerate">Quantity:</label>
+        <input id="numberToGenerate" type="text" value="1" />
+      </p>
+      <p>
+        <label for="generateWithHyphens">Hyphens:</label>
+        <input id="generateWithHyphens" type="checkbox" checked />
+      </p>
+      <p>
+        <label for="generateUppercase">Uppercase:</label>
+        <input id="generateUppercase" type="checkbox" />
+      </p>
+      <p>
+        <label for="generateWithBraces">Braces:</label>
+        <input id="generateWithBraces" type="checkbox" />
+      </p>
+      <p id="errorMessage"></p>
+      <input type="submit" value="Generate">
+    </form>
+    <h2>Results</h2>
+    <textarea id="results" rows="20" cols="50"></textarea>
+    <button id="copyToClipboard">Copy to clipboard</button>
+    <h2>How does it work?</h2>
+    <p>A globally unique identifier (GUID) or universally unique identifier (UUID) is a 128-bit number used as a unique
+      identifier in computer systems. There is a non-zero probability that generated GUID/UUIDs are not unique but for
+      all
+      practical purposes they can be treated as unique.</p>
+    <p>In it's canonical representation UUIDs are represented with 32 hexadecimal digits seperated by hyphens in groups
+      of
+      8-4-4-4-12.</p>
+    <p>GUID/UUIDs are commonly unsed as database keys and unique identifiers for data that may be duplicated across
+      data
+      stores.</p>
+  </div>
+
+  <script>
+    $("#errorMessage").hide();
+
+    function showError(message) {
+      $("#errorMessage").show().append("<p>" + message + "</p>");
+    }
+
+    function generate(number, generateWithBraces, generateUppercase, generateWithHyphens) {
+      var rval = "";
+      for (var i = 0; i < number; i++) {
+        var uuid = uuidv4();
+        if (!generateWithHyphens) {
+          uuid = uuid.replace(/[-]/g, "");
+        }
+        if (generateUppercase) {
+          uuid = uuid.toUpperCase();
+        }
+        if (generateWithBraces) {
+          uuid = "{" + uuid + "}";
+        }
+        rval += uuid + "\n";
+      }
+      return rval;
+    }
+
+    // Source: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    $("form").submit(function (event) {
+      event.preventDefault();
+      $("#errorMessage").hide();
+      $("#errorMessage").empty();
+
+      var numberToGenerateRaw = $("#numberToGenerate").val();
+      var numberToGenerate = Number(numberToGenerateRaw);
+      if (numberToGenerate > 10000) {
+        showError("WARNING: This generator will generate more than 10,000 GUIDs as it takes too long in the browser.");
+      }
+
+      var generateWithBraces = $("#generateWithBraces").prop('checked');
+      var generateUppercase = $("#generateUppercase").prop('checked');
+      var generateWithHyphens = $("#generateWithHyphens").prop('checked');
+      var results = generate(numberToGenerate, generateWithBraces, generateUppercase, generateWithHyphens)
+      $("#results").text(results);
+    });
+
+    $("form").submit();
+
+    $("#copyToClipboard").click(function () {
+      var resultsNode = $("#results").get(0);
+      resultsNode.select();
+      // https://gist.github.com/DominicTobias/12dcc416026d33b601f6d7d09fbcdff1
+
+      try {
+        var result = document.execCommand('copy');
+        if (!result) {
+          console.log('Copy to clipboard failed');
+        }
+      } catch (err) {
+        console.log('Copy to clipboard failed');
+      }
+
+      window.getSelection().removeAllRanges();
+    });
+  </script>
+</body>
+
+</html>
