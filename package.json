@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node build.js",
     "serve": "nodemon --watch src/ -x \"npm run build\" -e ejs,css,html,js",
-    "compress": "node compress.js"
+    "compress": "node compress.js",
+    "deploy": "node deploy.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/nielsencfm/nielsen-developer-tools#readme",
   "dependencies": {
+    "aws-sdk": "^2.320.0",
     "ejs": "^2.6.1",
     "fs-extra": "^7.0.0",
     "glob": "^7.1.3",
