@@ -1,0 +1,31 @@
+input[type="text"] {
+  width: 75px;
+}
+
+#errorMessage {
+  color: red;
+}
+
+input[type="submit"] {
+  font-size: 2em;
+  margin-left: 200px;
+}
+
+h2 {
+  margin-top: 40px;
+}
+
+textarea {
+  font-family: monospace;
+}
+
+label {
+  display: inline-block;
+  width: 200px;
+  text-align: right;
+}
+
+textarea {
+  white-space: nowrap;
+  overflow: auto;
+}
