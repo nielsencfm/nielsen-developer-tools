@@ -2,6 +2,7 @@ const glob = require("glob");
 const fs = require('fs-extra');
 const ejs = require('ejs');
 const path = require("path");
+var minify = require('html-minifier').minify;
 
 fs.removeSync('dist')
 fs.mkdirsSync('dist');
