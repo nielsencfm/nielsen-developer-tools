@@ -3,9 +3,11 @@ const fs = require('fs-extra');
 const ejs = require('ejs');
 const path = require("path");
 
+fs.removeSync('dist')
+fs.mkdirsSync('dist');
 fs.copySync('src/index.html', 'dist/index.html');
 
-glob("pages/**/*.json", null, function (er, files) {
+glob("src/pages/**/*.json", null, function (er, files) {
   var layout = fs.readFileSync("src/layout.ejs", 'utf8');
   let template = ejs.compile(layout);
 
