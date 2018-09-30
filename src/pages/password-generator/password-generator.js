@@ -44,8 +44,7 @@ function generatePassword(length, charset) {
   return rval;
 }
 
-$("form").submit(function (event) {
-  event.preventDefault();
+function submitForm() {
   $("#errorMessage").hide();
   $("#errorMessage").empty();
 
@@ -74,9 +73,10 @@ $("form").submit(function (event) {
     generateWithUpperCaseLetters,
     generateWithoutAmbigousCharaters);
   $("#results").text(results);
-});
+}
 
-$("form").submit();
+$("form").submit(submitForm);
+submitForm();
 
 $("#copyToClipboard").click(function () {
   var resultsNode = $("#results").get(0);

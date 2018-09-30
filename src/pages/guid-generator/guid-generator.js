@@ -31,8 +31,7 @@ function uuidv4() {
   });
 }
 
-$("form").submit(function (event) {
-  event.preventDefault();
+function generateUuid() {
   $("#errorMessage").hide();
   $("#errorMessage").empty();
 
@@ -40,6 +39,7 @@ $("form").submit(function (event) {
   var numberToGenerate = Number(numberToGenerateRaw);
   if (numberToGenerate > 10000) {
     showError("WARNING: This generator will generate more than 10,000 GUIDs as it takes too long in the browser.");
+    numberToGenerate = 10000;
   }
 
   var generateWithBraces = $("#generateWithBraces").prop('checked');
@@ -47,9 +47,10 @@ $("form").submit(function (event) {
   var generateWithHyphens = $("#generateWithHyphens").prop('checked');
   var results = generate(numberToGenerate, generateWithBraces, generateUppercase, generateWithHyphens)
   $("#results").text(results);
-});
+}
 
-$("form").submit();
+$("form").submit(generateUuid);
+generateUuid();
 
 $("#copyToClipboard").click(function () {
   var resultsNode = $("#results").get(0);

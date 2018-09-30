@@ -20,6 +20,7 @@ glob("src/pages/**/*.json", null, function (er, files) {
     var pageFolderPath = path.dirname(settingsFileName);
 
     var styles = fs.readFileSync("src/style.css", 'utf8');
+    var script = fs.readFileSync("src/script.js", 'utf8');
 
     var pageHtmlFileName = path.join(pageFolderPath, pageName + '.html');
     var pageHtml = fs.readFileSync(pageHtmlFileName, 'utf8');
@@ -29,6 +30,7 @@ glob("src/pages/**/*.json", null, function (er, files) {
 
     const pageSettings = fs.readJsonSync(settingsFileName);
     pageSettings.style = styles;
+    pageSettings.script = script;
     pageSettings.pageHtml = pageHtml;
     pageSettings.pageScript = pageScript;
 

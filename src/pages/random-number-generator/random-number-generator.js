@@ -4,8 +4,7 @@ function showError(message) {
   $("#errorMessage").show().append("<p>" + message + "</p>");
 }
 
-$("form").submit(function (event) {
-  event.preventDefault();
+$("form").submit(function () {
   $("#errorMessage").hide();
   $("#errorMessage").empty();
 
