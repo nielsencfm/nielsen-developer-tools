@@ -21,7 +21,7 @@ glob("dist/**/*.*", null, function (er, files) {
       console.log('File Error', err);
     });
     const uploadParams = {
-      Bucket: 'nielsen-developer-tools',
+      Bucket: 'nielsen-developer-tools.com',
       Key: path.basename(file),
       ContentType: 'text/html',
       Body: fileStream
