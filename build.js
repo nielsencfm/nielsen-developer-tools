@@ -28,11 +28,15 @@ glob("src/pages/**/*.json", null, function (er, files) {
     var pageScriptFileName = path.join(pageFolderPath, pageName + '.js');
     var pageScript = fs.readFileSync(pageScriptFileName, 'utf8');
 
+    var pageStyleFileName = path.join(pageFolderPath, pageName + '.css');
+    var pageStyle = fs.readFileSync(pageStyleFileName, 'utf8');
+
     const pageSettings = fs.readJsonSync(settingsFileName);
     pageSettings.style = styles;
     pageSettings.script = script;
     pageSettings.pageHtml = pageHtml;
     pageSettings.pageScript = pageScript;
+    pageSettings.pageStyle = pageStyle;
 
     var output = template(pageSettings);
     // console.log('output', output);

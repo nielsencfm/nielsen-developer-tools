@@ -1,7 +1,7 @@
-$("#errorMessage").hide();
+$("errorMessage").hide();
 
 function showError(message) {
-  $("#errorMessage").show().append("<p>" + message + "</p>");
+  $("errorMessage").show().appendContent("<p>" + message + "</p>");
 }
 
 function generate(number, generateWithBraces, generateUppercase, generateWithHyphens) {
@@ -32,39 +32,30 @@ function uuidv4() {
 }
 
 function generateUuid() {
-  $("#errorMessage").hide();
-  $("#errorMessage").empty();
+  $("errorMessage").hide();
+  $("errorMessage").setContent("");
 
-  var numberToGenerateRaw = $("#numberToGenerate").val();
-  var numberToGenerate = Number(numberToGenerateRaw);
+  var numberToGenerate = $("numberToGenerate").getNumber();
   if (numberToGenerate > 10000) {
     showError("WARNING: This generator will generate more than 10,000 GUIDs as it takes too long in the browser.");
     numberToGenerate = 10000;
   }
 
-  var generateWithBraces = $("#generateWithBraces").prop('checked');
-  var generateUppercase = $("#generateUppercase").prop('checked');
-  var generateWithHyphens = $("#generateWithHyphens").prop('checked');
+  var generateWithBraces = $("generateWithBraces").getProp('checked');
+  var generateUppercase = $("generateUppercase").getProp('checked');
+  var generateWithHyphens = $("generateWithHyphens").getProp('checked');
   var results = generate(numberToGenerate, generateWithBraces, generateUppercase, generateWithHyphens)
-  $("#results").text(results);
+  $("results").setContent(results);
 }
 
-$("form").submit(generateUuid);
+function submitForm(event) {
+  event.preventDefault();
+  generateUuid();
+  return false;
+}
+
 generateUuid();
 
-$("#copyToClipboard").click(function () {
-  var resultsNode = $("#results").get(0);
-  resultsNode.select();
-  // https://gist.github.com/DominicTobias/12dcc416026d33b601f6d7d09fbcdff1
-
-  try {
-    var result = document.execCommand('copy');
-    if (!result) {
-      console.log('Copy to clipboard failed');
-    }
-  } catch (err) {
-    console.log('Copy to clipboard failed');
-  }
-
-  window.getSelection().removeAllRanges();
-});
+function copyToClipboard() {
+  $('results').copyToClipboard();
+}

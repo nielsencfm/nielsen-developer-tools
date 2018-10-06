@@ -1,71 +1,45 @@
-var $ = function (selector) {
-  var $elements = document.querySelectorAll(selector);
-
-  function forEachElement(func) {
-    for (i = 0; i < $elements.length; ++i) {
-      func($elements[i]);
-    }
-  }
-
+var $ = function (id) {
+  var _element = document.getElementById(id);
   return {
-    get: function (index) {
-      return $elements[index];
-    },
     hide: function () {
-      forEachElement(function (element) {
-        element.style.display = "none";
-      });
+      _element.style.display = "none";
       return this;
     },
     show: function () {
-      forEachElement(function (element) {
-        element.style.display = "block";
-      });
+      _element.style.display = "block";
       return this;
     },
-    empty: function () {
-      forEachElement(function (element) {
-        element.innerHTML = "";
-      });
+    getProp: function (name) {
+      return _element[name];
+    },
+    setProp: function (name, newValue) {
+      _element[name] = newValue;
+    },
+    setContent: function (content) {
+      _element.innerHTML = content;
       return this;
     },
-    append: function (content) {
-      forEachElement(function (element) {
-        element.innerHTML = element.innerHTML + content;
-      });
+    appendContent: function (content) {
+      _element.innerHTML = _element.innerHTML + content;
       return this;
     },
-    text: function (content) {
-      forEachElement(function (element) {
-        element.innerHTML = content;
-      });
-      return this;
+    getNumber: function () {
+      var raw = _element.value;
+      return Number(raw);
     },
-    click: function (callback) {
-      forEachElement(function (element) {
-        element.onclick = callback;
-      });
-    },
-    val: function () {
-      if ($elements.length > 0) {
-        return $elements[0].value;
-      }
-    },
-    prop: function (key) {
-      if ($elements.length > 0) {
-        return $elements[0][key];
-      }
-    },
-    submit: function (callback) {
-      forEachElement(function (element) {
-        if (typeof callback === "function") {
-          element.onsubmit = function (event) {
-            event.preventDefault();
-            callback();
-            return false;
-          }
+    copyToClipboard: function () {
+      _element.select();
+
+      try {
+        var result = document.execCommand('copy');
+        if (!result) {
+          console.log('Copy to clipboard failed');
         }
-      });
+      } catch (err) {
+        console.log('Copy to clipboard failed');
+      }
+
+      window.getSelection().removeAllRanges();
     }
-  }
+  };
 }

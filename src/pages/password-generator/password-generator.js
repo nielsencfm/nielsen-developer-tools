@@ -1,7 +1,7 @@
-$("#errorMessage").hide();
+$("errorMessage").hide();
 
 function showError(message) {
-  $("#errorMessage").show().append("<p>" + message + "</p>");
+  $("errorMessage").show().appendContent("<p>" + message + "</p>");
 }
 
 function generate(numberToGenerate,
@@ -44,27 +44,28 @@ function generatePassword(length, charset) {
   return rval;
 }
 
-function submitForm() {
-  $("#errorMessage").hide();
-  $("#errorMessage").empty();
+function submitForm(event) {
+  if (event) {
+    event.preventDefault();
+  }
+  $("errorMessage").hide().setContent("");
 
-  var numberToGenerateRaw = $("#numberToGenerate").val();
-  var numberToGenerate = Number(numberToGenerateRaw);
+  var numberToGenerate = $("numberToGenerate").getNumber();
   if (numberToGenerate > 100) {
     showError("WARNING: This generator will not generate more than 100 passwords as it takes too long in the browser.");
+    numberToGenerate = 100;
   }
 
-  var generateLengthRaw = $("#generateLength").val();
-  var generateLength = Number(generateLengthRaw);
+  var generateLength = $("generateLength").getNumber();
   if (generateLength > 100) {
     showError("WARNING: This generator will generate more than 100 GUIDs as it takes too long in the browser.");
   }
 
-  var generateWithSymbols = $("#generateWithSymbols").prop("checked");
-  var generateWithNumbers = $("#generateWithNumbers").prop("checked");
-  var generateWithLowerCaseLetters = $("#generateWithLowerCaseLetters").prop("checked");
-  var generateWithUpperCaseLetters = $("#generateWithUpperCaseLetters").prop("checked");
-  var generateWithoutAmbigousCharaters = $("#generateWithoutAmbigousCharaters").prop("checked");
+  var generateWithSymbols = $("generateWithSymbols").getProp("checked");
+  var generateWithNumbers = $("generateWithNumbers").getProp("checked");
+  var generateWithLowerCaseLetters = $("generateWithLowerCaseLetters").getProp("checked");
+  var generateWithUpperCaseLetters = $("generateWithUpperCaseLetters").getProp("checked");
+  var generateWithoutAmbigousCharaters = $("generateWithoutAmbigousCharaters").getProp("checked");
   var results = generate(numberToGenerate,
     generateLength,
     generateWithSymbols,
@@ -72,15 +73,14 @@ function submitForm() {
     generateWithLowerCaseLetters,
     generateWithUpperCaseLetters,
     generateWithoutAmbigousCharaters);
-  $("#results").text(results);
+  $("results").setContent(results);
+  return false;
 }
 
-$("form").submit(submitForm);
 submitForm();
 
-$("#copyToClipboard").click(function () {
-  var resultsNode = $("#results").get(0);
-  resultsNode.select();
+function copyToClipboard() {
+  $('results').select();
   // https://gist.github.com/DominicTobias/12dcc416026d33b601f6d7d09fbcdff1
 
   try {
@@ -93,4 +93,4 @@ $("#copyToClipboard").click(function () {
   }
 
   window.getSelection().removeAllRanges();
-});
+};

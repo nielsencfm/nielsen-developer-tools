@@ -1,4 +1,4 @@
-<form>
+<form onsubmit="return submitForm(event)">
   <p>
     <label for="numberToGenerate">Quantity:</label>
     <input id="numberToGenerate" type="text" value="1" />
@@ -19,8 +19,8 @@
   <input type="submit" value="Generate">
 </form>
 <h2>Results</h2>
-<textarea id="results" rows="20" cols="50"></textarea>
-<button id="copyToClipboard">Copy to clipboard</button>
+<textarea id="results" rows="20" cols="50" class="no-wrap"></textarea>
+<button onclick="copyToClipboard()">Copy to clipboard</button>
 <h2>How does it work?</h2>
 <p>A Globally Unique Identifier (GUID) or Universally Unique Identifier (UUID) is a 128-bit number used as a unique
 identifier in computer systems. They are commonly unsed as database keys and unique identifiers for data that may be

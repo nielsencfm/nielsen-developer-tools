@@ -1,3 +1,9 @@
+body {
+  background-color: black;
+  color: white;
+  margin: 20px;
+}
+
 input[type="text"] {
   width: 75px;
 }
@@ -23,9 +29,4 @@ label {
   display: inline-block;
   width: 200px;
   text-align: right;
-}
-
-textarea {
-  white-space: nowrap;
-  overflow: auto;
 }

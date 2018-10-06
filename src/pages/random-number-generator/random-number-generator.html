@@ -1,4 +1,4 @@
-<form>
+<form onsubmit="return submitForm(event)">
   <p>
     <label for="numberOfRandomNumbersToGenerate">Quantity:</label>
     <input id="numberOfRandomNumbersToGenerate" type="text" value="1" />
@@ -15,8 +15,8 @@
   <input type="submit" value="Generate">
 </form>
 <h2>Results</h2>
-<textarea id="results" rows="20" cols="50"></textarea>
-<button id="copyToClipboard">Copy to clipboard</button>
+<textarea id="results" rows="20" cols="50" class="no-wrap"></textarea>
+<button onclick="copyToClipboard()">Copy to clipboard</button>
 <h2>How does it work?</h2>
 <p>This random number generator uses the JavaScript (ECMAScript) 'random()' function.</p>
 <p>According to ECMA-262 the function 'random' returns a Number value with positive sign, greater than or equal to
